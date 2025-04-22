@@ -5,7 +5,8 @@ export interface VirtualListType<T> {
 
 export interface DataType {
     index: number,
-    text: string
+    text: string,
+    key: string
 }
 
 export interface PositionsType {

@@ -24,11 +24,13 @@
 <script lang="ts" setup>
 import type { DataType } from '@/components/VirtualList/type'
 import { ref } from 'vue'
+
 import VirtualList from '@/components/VirtualList/VirtualList.vue'
 
 const items = ref<DataType[]>(Array.from({ length: 1000 }, (_, i) => ({
     index: i,
-    text: `Item ${i} - ${'Content '.repeat(Math.floor(Math.random() * 80) + 1)}`
+    text: `Item ${i} - ${'Content '.repeat(Math.floor(Math.random() * 80) + 1)}`,
+    key: `new-item-${Date.now()}-${Math.random()}`
 })))
 
 const highlightText = (text: string, keyword: string) => {
@@ -39,7 +41,8 @@ const highlightText = (text: string, keyword: string) => {
 
 const generateNewItem = (item: DataType) => ({
     index: item.index + 1,
-    text: `New Item - ${'Content '.repeat(Math.floor(Math.random() * 80) + 1)}`
+    text: `New Item - ${'Content '.repeat(Math.floor(Math.random() * 80) + 1)}`,
+    key: `new-item-${Date.now()}-${Math.random()}`
 } as DataType)
 </script>
 

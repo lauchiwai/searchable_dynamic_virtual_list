@@ -1,33 +1,22 @@
-# virtual_list
+# VirtualList 組件
 
-This template should help get you started developing with Vue 3 in Vite.
+## 功能亮點
 
-## Recommended IDE Setup
+### 🚀 核心特性
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- **虛擬滾動優化** - 採用 vue-virtual-scroller 實現大數據量高效能渲染
+- **即時搜尋定位** - 支援關鍵詞高亮與搜尋結果導航（上一個/下一個）
+- **動態資料操作** - 提供行級元素的插入與刪除功能
+- **響應式索引管理** - 自動維護資料項的索引一致性
 
-## Type Support for `.vue` Imports in TS
+### 🎯 技術指標
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) to make the TypeScript language service aware of `.vue` types.
+- 支援自訂內容模板
+- 自動滾動定位到啟用項
 
-## Customize configuration
+## 快速入門
 
-See [Vite Configuration Reference](https://vite.dev/config/).
-
-## Project Setup
-
-```sh
+```bash
 npm install
-```
-
-### Compile and Hot-Reload for Development
-
-```sh
 npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
 ```

@@ -15,15 +15,15 @@
             :min-item-size="80"
             :prerender="12"
             :buffer="200"
-            key-field="index"
+            key-field="key"
             class="scroller"
         >
             <template v-slot="{ item, index, active }">
                 <DynamicScrollerItem
                     :item="item"
                     :active="active"
-                    :data-index="index"
-                    :id="item.index"
+                    :data-index="item.key"
+                    :id="item.key"
                 >
                     <div class="content-container"
                         :class="[(searchState.activeIndex == index) ? 'blue-bgc' : '']"
@@ -38,14 +38,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { Ref } from 'vue';
 import type { DataType } from "@/components/VirtualList/type";
+import type { ComponentPublicInstance } from 'vue'
 
 import { DynamicScroller, DynamicScrollerItem } from 'vue-virtual-scroller';
-import { ref, watch, inject } from 'vue';
+import { ref, watch } from 'vue';
 
 import SearchBtn from './SearchBtn.vue';
-import type { ComponentPublicInstance } from 'vue'
 
 interface VirtualScrollerExposes {
     scrollToItem: (index: number) => void
@@ -74,15 +73,6 @@ watch(() => searchState.value.activeIndex, (newValue) => {
     }
 });
 
-// const insertItem = (newItem: DataType) => {
-//     _listData.value.splice(newItem.index, 0, newItem)
-//     _listData.value.forEach((item, idx) => {
-//         if (item.index !== idx) {
-//             item.index = idx
-//         }
-//     })
-// }
-
 const insertItem = (newItem: DataType) => {
     const insertIndex = newItem.index;
     
@@ -94,7 +84,7 @@ const insertItem = (newItem: DataType) => {
 
     newList.forEach((item, index) => {
         if (index >= insertIndex) {
-        item.index = index;
+            item.index = index;
         }
     });
 

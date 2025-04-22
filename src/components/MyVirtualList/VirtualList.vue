@@ -5,8 +5,8 @@
             <div ref="itemRefs"
                 v-for="(Content) in visibleData"
                 class="list-box"
-                :id="`_${Content.index}`"
-                :key="`_${Content.index}`"
+                :id="`_${Content.item.key}`"
+                :key="`_${Content.item.key}`"
             >
                 <slot name="content-box" :content="Content"></slot>
             </div>
@@ -35,6 +35,7 @@ const itemRefs = ref<HTMLElement[]>([]);
 const phantomRef = ref<HTMLDivElement| null>(null);
 const contentRef = ref<HTMLDivElement| null>(null);
 
+const keyToIndexMap = new Map<string, number>();
 const positions = ref<PositionsType[]>([]);
 const oriListData = defineModel('listData', { type: Array as () => DataType[], required: true, default: []});
 
@@ -114,12 +115,16 @@ const scrollEvent = () => {
 };
 
 const initPositions = () => {
-    positions.value = _listData.value.map((item, index) => ({
-        index: index,
-        height: itemHeight,
-        top: index * itemHeight,
-        bottom: (index + 1) * itemHeight
-    }));
+    keyToIndexMap.clear(); 
+    positions.value = _listData.value.map((virtualItem, index) => {
+        keyToIndexMap.set(virtualItem.item.key, index); 
+        return {
+            index: index,
+            height: itemHeight,
+            top: index * itemHeight,
+            bottom: (index + 1) * itemHeight
+        }
+    });
 }
 
 const debounce = (callback: () => void, delay: number) => {
@@ -138,13 +143,16 @@ const debouncedUpdateItemsSize = debounce(() => {
         nodes.forEach((node) => {
             const rect = node.getBoundingClientRect();
             const height = rect.height;
-            const index = parseInt(node.id.slice(1));
-            const oldHeight = positions.value[index]?.height;
+            const dataKey = node.id.slice(1); 
+            
+            const indexInPositions = keyToIndexMap.get(dataKey);
+            if (indexInPositions === undefined) return;
+            const oldHeight = positions.value[indexInPositions]?.height;
             const dValue = oldHeight - height;
-            if (dValue && positions.value[index]) {
-                positions.value[index].bottom -= dValue;
-                positions.value[index].height = height;
-                for (let k = index + 1; k < positions.value.length; k++) {
+            if (dValue && positions.value[indexInPositions]) {
+                positions.value[indexInPositions].bottom -= dValue;
+                positions.value[indexInPositions].height = height;
+                for (let k = indexInPositions + 1; k < positions.value.length; k++) {
                     positions.value[k].top = positions.value[k - 1].bottom;
                     positions.value[k].bottom -= dValue;
                 }

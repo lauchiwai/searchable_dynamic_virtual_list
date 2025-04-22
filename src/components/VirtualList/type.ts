@@ -1,4 +1,5 @@
 export interface DataType {
     index: number,
-    text: string
+    text: string,
+    key: string
 }
